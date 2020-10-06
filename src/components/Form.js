@@ -4,6 +4,7 @@ import React, { useState } from "react";
 
 function Forms(props) {
     function handleChange(e) {
+        
         setName(e.target.value);
       }
     const [name, setName] = useState("");
