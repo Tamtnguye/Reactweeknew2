@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Todo from "./components/Todo";
 import Forms from "./components/Form";
 import { nanoid } from "nanoid";
 import FilterButton from "./components/FilterButton";
 
+function usePrevious(value) {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+}
 const FILTER_MAP = {
   All: () => true,
   Active: task => !task.completed,
@@ -13,8 +20,10 @@ const FILTER_NAMES = Object.keys(FILTER_MAP);
 
 function App(props) {
   
-
-  const [tasks, setTasks] = useState(props.tasks);
+  const savedItems = JSON.parse(localStorage.getItem('tasks'));
+  const [tasks, setTasks] = useState(savedItems || props.tasks )
+  // const [tasks, setTasks] = useState(props.tasks);
+  
   function addTask(name) {
     const newTask = { id: "todo-" + nanoid(), name: name, completed: false};
     setTasks([...tasks, newTask]);
@@ -34,6 +43,11 @@ function App(props) {
   function deleteTask(id) {
     const remainingTasks = tasks.filter(task => id !== task.id);
     setTasks(remainingTasks);
+  }
+  function deleteAll(id) {
+    const remainingTasks = [];
+    setTasks(remainingTasks);
+    localStorage.clear();
   }
 
   function editTask(id, newName) {
@@ -56,6 +70,7 @@ function App(props) {
   toggleTaskCompleted={toggleTaskCompleted}
   deleteTask={deleteTask}
   editTask={editTask}
+  deleteALL={deleteAll}
   />
   ));
   const filterList = FILTER_NAMES.map(name => (
@@ -68,6 +83,19 @@ function App(props) {
   ));
   const tasksNoun = taskList.length !== 1 ? 'tasks' : 'task';
   const headingText =`${taskList.length} ${tasksNoun} remaining`;
+  const listHeadingRef = useRef(null);
+  const prevTaskLength = usePrevious(tasks.length);
+  useEffect(() => {
+    const tasks = JSON.parse(localStorage.getItem('tasks'));
+    if (tasks) {
+      setTasks(tasks);
+    }
+  }, [props.tasks]);
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
+
+
   return (
     
     <div className="todoapp stack-large">
@@ -110,7 +138,9 @@ function App(props) {
           <span className="visually-hidden"> tasks</span>
         </button> */}
       </div>
-      <h2 id="list-heading">
+      <h2 id="list-heading" 
+      tabIndex="-1" 
+      ref={listHeadingRef}> 
         {headingText}
       </h2>
       <ul
