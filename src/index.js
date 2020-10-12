@@ -2,6 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import AppProvider from "./AppProvider";
+import ThemeSwitcher from "./ThemeSwitch";
+import { BrowserRouter, Route, Switch} from 'react-router-dom';
+
+
 
 const DATA = [
   { id: "todo-0", name: "Eat", completed: true },
@@ -11,12 +16,16 @@ const DATA = [
 
 ReactDOM.render(
   <React.StrictMode>
+    <AppProvider>
+    <BrowserRouter>
+    
     <App tasks={DATA}/>
+    
+    </BrowserRouter>
+    </AppProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
+
 
