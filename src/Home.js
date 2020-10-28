@@ -8,9 +8,9 @@ import { createGlobalStyle } from "styled-components";
 
 
 const DATA = [
-    { id: "todo-0", name: "Eat", completed: true },
-    { id: "todo-1", name: "Sleep", completed: false },
-    { id: "todo-2", name: "Repeat", completed: false }
+    { id: "todo-0", name: "Eat", status: 1 },
+    { id: "todo-1", name: "Sleep", status: 2 },
+    { id: "todo-2", name: "Repeat", status: 0 }
   ]
 
 function usePrevious(value) {
@@ -20,10 +20,16 @@ function usePrevious(value) {
   });
   return ref.current;
 }
+// const FILTER_MAP = {
+//   All: () => true,
+//   Active: task => !task.completed,
+//   Completed: task => task.completed
+// };
 const FILTER_MAP = {
   All: () => true,
-  Active: task => !task.completed,
-  Completed: task => task.completed
+  NotStarted: task => task.status= 0,
+  Started:task => task.status= 1,
+  Completed: task => task.status= 2
 };
 const FILTER_NAMES = Object.keys(FILTER_MAP);
 
@@ -53,7 +59,7 @@ function Home(props) {
     const remainingTasks = tasks.filter(task => id !== task.id);
     setTasks(remainingTasks);
   }
-  function deleteAll(id) {
+  function deleteAll() {
     const remainingTasks = [];
     setTasks(remainingTasks);
     localStorage.clear();
@@ -74,7 +80,7 @@ function Home(props) {
   <Todo 
   id={task.id} 
   name={task.name} 
-  completed={task.completed} 
+  status={task.status} 
   key={task.id}
   toggleTaskCompleted={toggleTaskCompleted}
   deleteTask={deleteTask}
@@ -113,7 +119,7 @@ function Home(props) {
       <GlobalStyles />
       <ThemeSwitcher />
 
-      <Forms   addTask={addTask}/>
+      <Forms   addTask={addTask} deleteAll={deleteAll}/>
         
       
       <div className="filters btn-group stack-exception">

@@ -35,7 +35,7 @@ function Forms(props) {
       <button
             type="submit"
             className="btn btn__danger btn__lg"
-            onClick={() => props.deleteAll(props.id) && localStorage.clear()}
+            onClick={() => props.deleteAll()}
           >
             Delete ALL Task 
             {/* <span className="visually-hidden">{props.name}</span> */}

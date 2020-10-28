@@ -6,11 +6,12 @@ function Navbar() {
     return (
       <NavBar>
           <NavMenu>
-        <Link to="/">Home </Link>
+        <Link to="/">Home </Link></NavMenu>
+        <NavMenu><Link to="/dogs">Dogs</Link></NavMenu>
+        <NavMenu><Link to="/About">About Us </Link></NavMenu>
+        <NavMenu><Link to="/beer">Beer </Link></NavMenu>
         
         
-        <Link to="/About">About Us </Link>
-        </NavMenu>
       </NavBar>
     );
   };
@@ -18,11 +19,11 @@ function Navbar() {
   const NavBar = styled.div`
   display: flex;
   width: 100%;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
-  background: #333;
+  background: #D3D3D3;
   min-height: 50px;
-  font-size: 1.2rem;
+  font-size: 2rem;
   font-weight: 500;
   color: skyblue;
   list-style: none;
@@ -31,11 +32,12 @@ function Navbar() {
 const NavMenu = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
 `;
 
 const NavLink = styled.div`
   display: block;
+  
   padding: 1rem;
   transition: 250ms ease background-color;
   &:hover {
@@ -46,5 +48,6 @@ const NavLink = styled.div`
 
 const NavToggle = styled(NavLink)`
   text-decoration: underline;
+  
 `;
   export default Navbar;
